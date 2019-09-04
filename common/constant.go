@@ -29,7 +29,7 @@ const FindRelationDetailedByWhereSql = `SELECT
 		LEFT JOIN eo_server AS s ON ps.server_id = s.id
 		LEFT JOIN eo_project AS p ON ps.project_id = p.id
 	WHERE
-		1 = 1 `
+		1 = 1 and s.status = 0 `
 
 const QueryByProjetIdSql = `SELECT
 		s.*, ps.user_id,

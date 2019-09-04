@@ -20,7 +20,7 @@ type IndexController struct {
 func (c *IndexController) Index() {
 
 	c.Prepare()
-	c.authenticate();
+	c.authenticate()
 	c.Layout = ""
 	c.TplName = "index/index.html"
 	//
@@ -61,7 +61,7 @@ func (c *IndexController) Index() {
 // Edit 编辑
 func (c *IndexController) Edit() {
 	c.Prepare()
-	c.authenticate();
+	c.authenticate()
 	c.Layout = ""
 	c.TplName = "index/edit.html"
 
@@ -144,7 +144,7 @@ func (c *IndexController) Edit() {
 
 // Delete 删除
 func (c *IndexController) Delete() {
-	c.authenticate();
+	c.authenticate()
 	id, _ := c.GetInt("id", 0)
 	if id <= 0 {
 		c.JsonResult(500, "Server ID is require.")
@@ -174,7 +174,7 @@ func (c *IndexController) Delete() {
  */
 func (c *IndexController) Build() {
 	c.Prepare()
-	c.authenticate();
+	c.authenticate()
 	c.TplName = "index/log.html"
 
 	id, err := strconv.Atoi(c.Input().Get(":id"))
@@ -190,20 +190,23 @@ func (c *IndexController) Build() {
 		c.TplName = "errors/500.html"
 		c.Data["Message"] = err.Error()
 	} else {
+		if project.Status != 0 {
+			logs.Error(500, "Project disabled.")
+			c.ServerError("Project disabled.")
+			c.StopRun()
+		}
 		c.Data["Model"] = project
 	}
 
 	psRelationDetailed, err := model.FindRelationDetailedByWhere("AND ps.project_id = ?", project.Id)
 
 	if err != nil {
-		logs.Error(5001, err.Error())
-
-		c.Ctx.WriteString("Data error")
-		c.StopRun()
+		logs.Error(500, err.Error())
+		c.ServerError("Build error")
 	}
-	if len(psRelationDetailed) < 0 {
-		c.Ctx.WriteString("Data is empty")
-		c.StopRun()
+	if len(psRelationDetailed) <= 0 {
+		logs.Error(500, "Servers empty or disabled.")
+		c.ServerError("Servers empty or disabled.")
 	}
 
 	for _, job := range psRelationDetailed {
@@ -213,7 +216,7 @@ func (c *IndexController) Build() {
 
 func (c *IndexController) ServerList() {
 	c.Prepare()
-	c.authenticate();
+	c.authenticate()
 	c.TplName = "index/server_list.html"
 
 	id, err := strconv.Atoi(c.Input().Get(":id"))
@@ -264,7 +267,7 @@ func (c *IndexController) AddServer() {
 		}
 
 		serverIds := make([]int, len(serverParams))
-		index := 0;
+		index := 0
 		for _, id := range serverParams {
 			if id, err := strconv.Atoi(id); err == nil {
 				serverIds[index] = id
@@ -284,7 +287,7 @@ func (c *IndexController) AddServer() {
 
 		relations := make([]map[string]interface{}, len(servers))
 
-		index = 0;
+		index = 0
 		for _, server := range servers {
 			ps := model.NewPsRelation()
 
@@ -321,10 +324,10 @@ func (c *IndexController) AddServer() {
 
 	ps := model.NewPsRelation()
 
-	var serverIds []int;
+	var serverIds []int
 	if pss, err := ps.QueryByProjetId(id, c.User.Id); err == nil && len(pss) > 0 {
 		serverIds = make([]int, len(pss))
-		i := 0;
+		i := 0
 		for _, item := range pss {
 			serverIds[i] = item.ServerId
 			i++
@@ -381,7 +384,7 @@ func (c *IndexController) DeleteServer() {
 
 func (c *IndexController) Log() {
 	c.Prepare()
-	c.authenticate();
+	c.authenticate()
 	c.Layout = ""
 	c.TplName = "index/log.html"
 }
