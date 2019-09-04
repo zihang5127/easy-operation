@@ -48,12 +48,12 @@ func (p *SSHClient) Connection(user, host, pass string) (*ssh.Client, *ssh.Sessi
 
 func (p *SSHClient) Command(host url.URL, username, password, shell string, channel chan<- []byte) {
 	defer close(channel)
-	logs.Info("connecting %s", host)
+	logs.Info("Connecting %s", host)
 
 	_, session, err := p.Connection(username, host.Host, password)
 
 	if err != nil {
-		logs.Error("Connection remote server error:", err.Error())
+		logs.Error("Connection remote server error: ", err.Error())
 		channel <- []byte("Error: Connection remote server error :" + err.Error())
 		return
 	}
@@ -65,25 +65,25 @@ func (p *SSHClient) Command(host url.URL, username, password, shell string, chan
 	}()
 	channel <- []byte("SSH Server connected: " + host.Host)
 
-	logs.Info("SSH Server connected %s: ", host)
+	logs.Info("SSH Server connected: %s ", host)
 
 	stdout, err := session.StdoutPipe()
 
 	if err != nil {
-		logs.Error("StdoutPipe: " + err.Error())
+		logs.Error("StdoutPipe error: %s", err.Error())
 		channel <- []byte("Error: StdoutPipe error : " + err.Error())
 		return
 	}
 	stderr, err := session.StderrPipe()
 	if err != nil {
-		logs.Error("StderrPipe: ", err.Error())
+		logs.Error("StderrPipe error: %s", err.Error())
 		channel <- []byte("Error: StderrPipe error : " + err.Error())
 		return
 	}
 
 	if err := session.Start(shell); err != nil {
-		logs.Error("Error: Start error => ", err.Error())
-		channel <- []byte("Error: Start error : " + err.Error())
+		logs.Error("Start error: %s", err.Error())
+		channel <- []byte("Start error: " + err.Error())
 		return
 	}
 
@@ -109,7 +109,7 @@ func (p *SSHClient) Command(host url.URL, username, password, shell string, chan
 
 	if err := session.Wait(); err != nil {
 
-		logs.Error("Wait error: ", err.Error())
+		logs.Error("Wait error: %s", err.Error())
 
 		channel <- []byte("Error: " + err.Error())
 		return

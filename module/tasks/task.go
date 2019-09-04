@@ -80,7 +80,7 @@ func Handle(value interface{}) {
 			u = &url.URL{Scheme: scheme, Host: host}
 		}
 
-		logs.Info("connecting ... %s", u)
+		logs.Info("Connecting ... %s", u)
 
 		go client.Command(*u, server.Username, server.PrivateKey, project.Shell, channel)
 
@@ -93,7 +93,7 @@ func Handle(value interface{}) {
 		}
 
 	} else {
-		logs.Error("Can not be converted to Task:", value)
+		logs.Error("Can not be converted to Task: ", value)
 	}
 }
 

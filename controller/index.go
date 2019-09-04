@@ -356,7 +356,7 @@ func (c *IndexController) DeleteServer() {
 	ps := model.NewPsRelation()
 
 	if err := ps.Find(ps_id); err != nil {
-		logs.Info("DeleteServer %s:", err)
+		logs.Info("Delete server failed: %s", err)
 
 		c.JsonResult(404, "Server does not exist.")
 	}

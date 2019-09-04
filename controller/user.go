@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/zihang5127/easy-operation/model"
 	"github.com/zihang5127/easy-operation/module/date"
@@ -282,11 +281,11 @@ func (c *UserController) Upload() {
 	width := int(w1)
 	height := int(h1)
 
-	logs.Info("%d %f %d %f", x, x1, y, y1)
+	logs.Info("x:[%d],xl:[%f],y:[%d],yl:[%f]", x, x1, y, y1)
 	fileName := "avatar_" + strconv.FormatInt(int64(time.Now().Nanosecond()), 16)
 
 	filePath := "static/upload/" + date.Format("yyyyMMdd") + "/" + fileName + ext
-	fmt.Println(filePath)
+	logs.Info("FilePath: [%s]", filePath)
 	path := filepath.Dir(filePath)
 
 	_ = os.MkdirAll(path, os.ModePerm)
@@ -310,7 +309,7 @@ func (c *UserController) Upload() {
 	m, _, err := image.Decode(buf)
 
 	if err != nil {
-		logs.Error("image.Decode => ", err)
+		logs.Error("Image decoding error: %s", err)
 		c.JsonResult(500, "Image decoding failed")
 	}
 
@@ -343,12 +342,12 @@ func (c *UserController) Upload() {
 		err = gif.Encode(f, subImg, &gif.Options{NumColors: 256})
 	}
 	if err != nil {
-		logs.Error("Picture clipping failed => ", err.Error())
+		logs.Error("Picture clipping error: %s ", err.Error())
 		c.JsonResult(500, "Picture clipping failed")
 	}
 
 	if err != nil {
-		logs.Error("File save failed => ", err.Error())
+		logs.Error("File save error: %s ", err.Error())
 		c.JsonResult(500, "File save failed")
 	}
 	url := "/" + filePath
