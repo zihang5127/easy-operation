@@ -285,7 +285,7 @@ func (c *UserController) Upload() {
 	logs.Info("%d %f %d %f", x, x1, y, y1)
 	fileName := "avatar_" + strconv.FormatInt(int64(time.Now().Nanosecond()), 16)
 
-	filePath := "static/uploads/" + date.Format("yyyyMMdd") + "/" + fileName + ext
+	filePath := "static/upload/" + date.Format("yyyyMMdd") + "/" + fileName + ext
 	fmt.Println(filePath)
 	path := filepath.Dir(filePath)
 
