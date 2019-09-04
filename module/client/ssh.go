@@ -63,9 +63,9 @@ func (p *SSHClient) Command(host url.URL, username, password, shell string, chan
 			session.Close()
 		}
 	}()
-	channel <- []byte("SSH Server connectioned: " + host.Host)
+	channel <- []byte("SSH Server connected: " + host.Host)
 
-	logs.Info("SSH Server connectioned: ", host)
+	logs.Info("SSH Server connected: ", host)
 
 	stdout, err := session.StdoutPipe()
 
