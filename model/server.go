@@ -47,7 +47,7 @@ func (m *Server) Find() error {
 	o := orm.NewOrm()
 
 	if err := o.Read(m); err != nil {
-		logs.Error("%s: ", "v0.1")
+		logs.Error("%s", err)
 		return err
 	}
 	return nil
@@ -95,7 +95,7 @@ func (m *Server) Search(keyword string, userId int, excludeServerId ...int) ([]S
 	_, err := o.Raw(sql, userId, keyword, keyword).QueryRows(&servers)
 
 	if err != nil {
-		logs.Error("", err.Error())
+		logs.Error("%s", err.Error())
 		return servers, err
 	}
 

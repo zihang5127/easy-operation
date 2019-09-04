@@ -36,7 +36,7 @@ func Handle(value interface{}) {
 		server := model.NewServer()
 		server.Id = task.ServerId
 		if err := server.Find(); err != nil {
-			logs.Error("", err.Error())
+			logs.Error("%s", err.Error())
 			return
 		}
 
@@ -44,7 +44,7 @@ func Handle(value interface{}) {
 		project.Id = task.ProjectId
 
 		if err := project.Find(); err != nil {
-			logs.Error("", err.Error())
+			logs.Error("%s", err.Error())
 			return
 		}
 		if strings.TrimSpace(project.Shell) == "" {
@@ -57,7 +57,7 @@ func Handle(value interface{}) {
 		client, err := CreateClient()
 		//defer close(wsChannel.GetChannel())
 		if err != nil {
-			logs.Error("", err.Error())
+			logs.Error("%s", err.Error())
 			return
 		}
 
@@ -76,11 +76,11 @@ func Handle(value interface{}) {
 		}
 
 		if err != nil {
-			logs.Error("%s: ", err)
+			logs.Error("%s", err)
 			u = &url.URL{Scheme: scheme, Host: host}
 		}
 
-		logs.Info("connecting ...", u)
+		logs.Info("connecting ... %s", u)
 
 		go client.Command(*u, server.Username, server.PrivateKey, project.Shell, channel)
 

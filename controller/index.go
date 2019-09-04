@@ -49,7 +49,7 @@ func (c *IndexController) Index() {
 	_, err := rs.QueryRows(&projectes) //把当前页面的数据序列化进一个切片内
 
 	if err != nil {
-		logs.Error("", err.Error())
+		logs.Error("%s", err.Error())
 	}
 
 	c.Data["lists"] = projectes
@@ -356,7 +356,7 @@ func (c *IndexController) DeleteServer() {
 	ps := model.NewPsRelation()
 
 	if err := ps.Find(ps_id); err != nil {
-		logs.Info("DeleteServer:", err)
+		logs.Info("DeleteServer %s:", err)
 
 		c.JsonResult(404, "Server does not exist.")
 	}

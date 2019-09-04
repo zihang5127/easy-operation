@@ -1,8 +1,10 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/zihang5127/easy-operation/model"
+	"github.com/zihang5127/easy-operation/module/date"
 	"github.com/zihang5127/easy-operation/module/encry"
 	"github.com/zihang5127/easy-operation/module/pager"
 
@@ -65,7 +67,7 @@ func (c *UserController) Index() {
 	_, err := rs.QueryRows(&users) //把当前页面的数据序列化进一个切片内
 
 	if err != nil {
-		logs.Error("", err.Error())
+		logs.Error("%s", err.Error())
 	}
 
 	c.Data["lists"] = users
@@ -118,7 +120,7 @@ func (c *UserController) My() {
 
 		view, err := c.ExecuteViewPathTemplate("user/list_item.html", *user)
 		if err != nil {
-			logs.Error("", err.Error())
+			logs.Error("%s", err.Error())
 		}
 
 		data := map[string]interface{}{
@@ -198,7 +200,7 @@ func (c *UserController) Edit() {
 
 		view, err := c.ExecuteViewPathTemplate("user/list_item.html", *user)
 		if err != nil {
-			logs.Error("", err.Error())
+			logs.Error("%s", err.Error())
 		}
 
 		data := map[string]interface{}{
@@ -230,7 +232,7 @@ func (c *UserController) Delete() {
 	userId, err := c.GetInt(":id")
 
 	if err != nil {
-		logs.Error("", err.Error())
+		logs.Error("%s", err.Error())
 		c.JsonResult(500, "Parameter error.")
 	}
 
@@ -238,7 +240,7 @@ func (c *UserController) Delete() {
 	user.Id = userId
 
 	if err := user.Find(); err != nil {
-		logs.Error("", err.Error())
+		logs.Error("%s", err.Error())
 		c.JsonResult(500, "Data query error.")
 	}
 
@@ -246,7 +248,7 @@ func (c *UserController) Delete() {
 		c.JsonResult(500, "Administrator username cannot be deleted")
 	}
 	if err := user.Delete(); err != nil {
-		logs.Error("", err.Error())
+		logs.Error("%s", err.Error())
 		c.JsonResult(500, "Delete failed")
 	}
 	c.JsonResult(0, "ok")
@@ -260,7 +262,7 @@ func (c *UserController) Upload() {
 	defer file.Close()
 
 	if err != nil {
-		logs.Error("", err.Error())
+		logs.Error("%s", err.Error())
 		c.JsonResult(500, "Read file Fail")
 	}
 
@@ -280,11 +282,11 @@ func (c *UserController) Upload() {
 	width := int(w1)
 	height := int(h1)
 
-	logs.Info("%s %s %s %s", x, x1, y, y1)
+	logs.Info("%d %f %d %f", x, x1, y, y1)
 	fileName := "avatar_" + strconv.FormatInt(int64(time.Now().Nanosecond()), 16)
 
-	filePath := "static/uploads/" + time.Now().Format("200601") + "/" + fileName + ext
-
+	filePath := "static/uploads/" + date.Format("yyyyMMdd") + "/" + fileName + ext
+	fmt.Println(filePath)
 	path := filepath.Dir(filePath)
 
 	_ = os.MkdirAll(path, os.ModePerm)
@@ -292,14 +294,14 @@ func (c *UserController) Upload() {
 	err = c.SaveToFile("image-file", filePath)
 
 	if err != nil {
-		logs.Error("", err)
+		logs.Error("%s", err)
 		c.JsonResult(500, "Image save failed")
 	}
 
 	fileBytes, err := ioutil.ReadFile(filePath)
 
 	if err != nil {
-		logs.Error("", err)
+		logs.Error("%s", err)
 		c.JsonResult(500, "Image save failed")
 	}
 
@@ -321,7 +323,7 @@ func (c *UserController) Upload() {
 	} else if rgbImg, ok := m.(*image.NRGBA); ok {
 		subImg = rgbImg.SubImage(image.Rect(x, y, x+width, y+height)).(*image.YCbCr) //图片裁剪x0 y0 x1 y1
 	} else {
-		logs.Info("%s",m)
+		logs.Info("%s", m)
 		c.JsonResult(500, "Image decoding failed")
 	}
 
@@ -354,31 +356,28 @@ func (c *UserController) Upload() {
 	c.JsonResult(0, "ok", url)
 }
 
-
-
-
 // Login 用户登录.
-func (c *UserController) Login()  {
+func (c *UserController) Login() {
 	c.Prepare()
 
 	if c.Ctx.Input.IsPost() {
 		username := c.GetString("username")
 		password := c.GetString("password")
 
-		user,err := model.NewUser().Login(username,password)
+		user, err := model.NewUser().Login(username, password)
 
 		//如果没有数据
 		if err == nil {
 			c.SetUser(*user)
-			c.JsonResult(0,"ok")
+			c.JsonResult(0, "ok")
 			c.StopRun()
-		}else{
-			logs.Error("%s",err)
-			c.JsonResult(500,"Wrong username or password",nil)
+		} else {
+			logs.Error("%s", err)
+			c.JsonResult(500, "Wrong username or password", nil)
 		}
 
 		return
-	}else{
+	} else {
 
 		c.Layout = ""
 		c.TplName = "user/login.html"
@@ -386,8 +385,8 @@ func (c *UserController) Login()  {
 }
 
 // Logout 退出登录.
-func (c *UserController) Logout(){
+func (c *UserController) Logout() {
 	c.SetUser(model.User{})
 
-	c.Redirect(beego.URLFor("UserController.Login"),302)
+	c.Redirect(beego.URLFor("UserController.Login"), 302)
 }

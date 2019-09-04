@@ -39,7 +39,7 @@ func (c *ServerController) Index() {
 	_, err := rs.QueryRows(&servers) //把当前页面的数据序列化进一个切片内
 
 	if err != nil {
-		logs.Error("", err.Error())
+		logs.Error("%s", err.Error())
 	}
 
 	c.Data["lists"] = servers
@@ -62,7 +62,6 @@ func (c *ServerController) Edit() {
 		serverName := c.GetString("name", "")
 		ipAddress := c.GetString("ip", "")
 		port, err := c.GetInt("port", 22)
-		serverType := c.GetString("type", "ssh")
 		status, _ := c.GetInt("status", 0)
 
 		if status != 0 && status != 1 {

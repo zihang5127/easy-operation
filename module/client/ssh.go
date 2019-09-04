@@ -48,7 +48,7 @@ func (p *SSHClient) Connection(user, host, pass string) (*ssh.Client, *ssh.Sessi
 
 func (p *SSHClient) Command(host url.URL, username, password, shell string, channel chan<- []byte) {
 	defer close(channel)
-	logs.Info("connecting ", host)
+	logs.Info("connecting %s", host)
 
 	_, session, err := p.Connection(username, host.Host, password)
 
@@ -65,7 +65,7 @@ func (p *SSHClient) Command(host url.URL, username, password, shell string, chan
 	}()
 	channel <- []byte("SSH Server connected: " + host.Host)
 
-	logs.Info("SSH Server connected: ", host)
+	logs.Info("SSH Server connected %s: ", host)
 
 	stdout, err := session.StdoutPipe()
 
