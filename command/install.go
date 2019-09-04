@@ -3,7 +3,6 @@ package command
 import (
 	"flag"
 	"fmt"
-	"github.com/astaxie/beego/logs"
 	"github.com/zihang5127/easy-operation/model"
 	"os"
 	"strings"
@@ -16,14 +15,17 @@ func Install() {
 	if len(os.Args) > 2 && os.Args[1] == "install" {
 
 		username := flag.String("username", "username", "Administrator username.")
-		pwd := flag.String("password", "", "Administrator password.")
+		password := flag.String("password", "", "Administrator password.")
 		email := flag.String("email", "", "Administrator email.")
 
 		_ = flag.CommandLine.Parse(os.Args[2:])
 
-		password := strings.TrimSpace(*pwd)
+		if strings.TrimSpace(*username) == "" {
+			fmt.Println("Administrator username  is required.")
+			os.Exit(0)
+		}
 
-		if password == "" {
+		if strings.TrimSpace(*password) == "" {
 			fmt.Println("Administrator password  is required.")
 			os.Exit(0)
 		}
@@ -34,13 +36,15 @@ func Install() {
 
 		user := model.NewUser()
 		user.Username = *username
-		user.Password = password
+		user.Password = *password
 		user.Email = *email
 
 		if err := user.Add(); err != nil {
-			logs.Error("%s: ", err)
+			fmt.Println("Administrator create error : ", err)
 			os.Exit(0)
 		}
+
+		fmt.Println("Administrator create success")
 		os.Exit(0)
 	}
 }
