@@ -1,0 +1,20 @@
+<tr>
+    <td>{{.Id}}</td>
+    <td>{{.RepositoryName}}</td>
+    <td>{{.BranchName}}</td>
+    <td>{{.RepositoryType}}</td>
+    <td>{{date .CreateTime "Y-m-d H:i:s"}}</td>
+    <td>
+        {{if eq .Status 0}}
+        <span class="label label-success">Enable</span>
+        {{else}}
+        <span class="label label-danger">Disabled</span>
+        {{end}}
+    </td>
+    <td>
+        <a href="{{urlfor "IndexController.Build" ":id" .Id}}" data-url="{{urlfor "IndexController.Build" ":id" .Id}}"  title="Build" class="btn btn-default btn-sm build-project-btn"  data-id="{{.Id}}" data-toggle="tooltip"><i class="fa fa-play" id = "build-btn" aria-hidden="true" style="color: red"></i></a>
+        <a href='{{urlfor "IndexController.Edit" ":id" .Id}}'  title="Edit" class="btn btn-default btn-sm edit-btn" data-toggle="tooltip"><i class="fa fa-edit" aria-hidden="true"></i></a>
+        <a href="###" title="Delete" class="btn btn-default btn-sm delete-project-btn" data-id="{{.Id}}" data-toggle="tooltip"><i class="fa fa-times" aria-hidden="true"></i></a>
+        <a href="{{urlfor "IndexController.ServerList" ":id" .Id}}" title="Server List" class="btn btn-default btn-sm" data-toggle="tooltip"><i class="fa fa-server" aria-hidden="true"></i></a>
+    </td>
+</tr>

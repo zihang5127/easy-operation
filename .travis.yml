@@ -1,0 +1,12 @@
+language: golang
+
+go:
+  - 1.6.x
+  - 1.7.x
+  - 1.8.x
+  - master
+
+install:
+  - go get -v -u ./...
+script:
+  - go build -v -tags "pam" && go install

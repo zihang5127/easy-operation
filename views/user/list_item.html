@@ -1,0 +1,27 @@
+<tr>
+    <td>{{.Id}}</td>
+    <td>{{.Username}}</td>
+    <td>{{.Email}}</td>
+    <td>{{.Phone}}</td>
+    <td>
+        {{if eq .Role 0}}
+            Admin
+        {{else}}
+            User
+        {{end}}
+    </td>
+    <td>
+        {{if eq .Status 0}}
+        <span style="color: green">Enable</span>
+        {{else}}
+        <span style="color: red">DIsable</span>
+        {{end}}
+    </td>
+    <td>
+        <a href='{{urlfor "UserController.Edit" ":id" .Id}}'  title="编辑" class="btn btn-default btn-sm edit-user-btn" data-toggle="tooltip"><i class="fa fa-edit" aria-hidden="true"></i></a>
+        {{if ne .Role 0}}
+        <a href="###" title="删除" class="btn btn-default btn-sm delete-user-btn" data-url="{{urlfor "UserController.Delete" ":id" .Id}}" data-toggle="tooltip"><i class="fa fa-times" aria-hidden="true"></i></a>
+
+        {{end}}
+    </td>
+</tr>

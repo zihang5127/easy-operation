@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EasyOperation</title>
+    {{template "widgets/headfile.html"}}
+</head>
+<body>
+{{template "widgets/head.html" .}}
+<div class="container">
+    <div class="bs-docs-container">
+        <div class="title">
+            <h3>Project List</h3>
+            <hr>
+        </div>
+        <div class="body">
+            <table class="table table-condensed" id="projectTable">
+                <thead>
+                <tr>
+                    <th width="5%">#</th>
+                    <th width="15%">Repo</th>
+                    <th>Branch</th>
+                    <th width="15%">Repository Type</th>
+                    <th width="15%">Create Time</th>
+                    <th width="10%">Status</th>
+                    <th width="17%">Operate</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{if .lists}}
+                    {{range $index,$item := .lists}}
+
+                        {{template "index/index_list.html" .}}
+                    {{end}}
+                {{end}}
+                </tbody>
+            </table>
+            {{if gt .totalCount 1}}
+                <nav>
+                    {{.html}}
+                </nav>
+            {{end}}
+        </div>
+        <div class="body-botton text-center">
+            <button class="btn btn-success btn-sm" id="addProjectBtn">New Project</button>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-labelledby="projectModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form method="post" id="projectForm" action='{{urlfor "IndexController.Edit"}}'>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="projectTitle">New Project</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Git Repository</label>
+                                    <input type="text" name="repo_name" id="repo_name" placeholder="Project Name"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Branch</label>
+                                    <input type="text" name="branch_name" id="branch_name"
+                                           placeholder="Repository Branch" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="repositoryType">Repository Type</label>
+                                    <select name="repository_type" class="form-control" id="repositoryType">
+                                        <option>None</option>
+                                        <option value="GitHub">GitHub</option>
+                                        <option value="GitLab">GitLab</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="shellScript">Shell Script</label>
+                                    <textarea name="shell" id="shellScript" class="form-control"
+                                              style="height: 200px;resize: none"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span class="text" style="padding-right: 15px;" id="errorMessage"></span>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="saveProjectBtn" data-load-text="saving">Save
+                        changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{template "widgets/foot.html" .}}
+<script type="text/javascript">
+
+    $(function () {
+        $("#projectTable").on("click", ".delete-project-btn", function () {
+            var id = $(this).attr("data-id");
+            var $this = $(this);
+            $.post('{{urlfor "IndexController.Delete"}}', {"id": id}, function (res) {
+                if (res.errcode === 0) {
+                    $this.closest("tr").empty().remove()
+                } else {
+                    alert(res.message)
+                }
+            });
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project build log - EasyOperation</title>
+    {{template "widgets/headfile.html"}}
+
+</head>
+<body>
+{{template "widgets/head.html" .}}
+<div class="container">
+    <div class="bs-docs-container">
+        <input type="hidden" name="id" value="{{.Model.Id}}">
+        <div class="title">
+            <h3>Project build log</h3>
+            <hr>
+        </div>
+        <div class="body">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Repository</label>
+                        <span class="form-control">{{.Model.RepositoryName}}</span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Branch</label>
+                        <span class="form-control">{{.Model.BranchName}}</span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="repositoryType">Repository Type</label>
+                        <span class="form-control">{{.Model.RepositoryType}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="shellScript">Log</label>
+                        <textarea name="shell" id="LogInfo" class="form-control"
+                                  style="height: 500px;resize: none"></textarea>
+                    </div>
+                </div>]
+            </div>
+        </div>
+        <div class="body-botton text-center">
+            <span class="text" style="padding-right: 15px;" id="statusMsg"></span>
+
+            <a href='{{urlfor "IndexController.Index"}}' class="btn btn-success btn-sm">Back Project List</a>
+
+        </div>
+    </div>
+</div>
+{{template "widgets/foot.html" .}}
+<script type="text/javascript">
+    $(function () {
+        var ws = new WebSocket('ws://' + window.location.host + '/ws');
+        ws.onmessage = function (e) {
+            $("#LogInfo").append(e.data+"&#10;");
+            $("#LogInfo").scrollTop($("#LogInfo")[0].scrollHeight);
+        };
+    });
+</script>
+</body>
+</html>
