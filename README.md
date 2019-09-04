@@ -21,7 +21,7 @@ git clone https://github.com/zihang5127/easy-operation.git
 
 **2、配置**
 
-系统的配置文件位于 conf/app.conf 中：
+- 系统的配置文件位于 conf/app.conf 中：
 
 ```ini
 sessionon = true
