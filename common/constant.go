@@ -4,32 +4,32 @@ package common
 var LoginSessionName = "LoginSessionName"
 
 const FindRelationDetailedByWhereSql = `SELECT
-	ps.id as relation_id,
-	ps.user_id,
-	ps.project_id,
-	s.id as server_id,
-	s.name AS server_name,
-	s.type AS server_type,
-	s.ip_address,
-	s.port,
-	s.user_name,
-	s.private_key,
-	s.tag as server_tag,
-	s.status,
-	p.repo_name,
-	p.branch_name,
-	p.tag as project_tag,
-	p.shell,
-	p.status as project_status,
-	p.key,
-	p.secure,
-	p.repo_type
-FROM
-	eo_ps_relation AS ps
-LEFT JOIN eo_server AS s ON ps.server_id = s.id
-LEFT JOIN eo_project AS p ON ps.project_id = p.id
-WHERE
-	1 = 1 `
+		ps.id as relation_id,
+		ps.user_id,
+		ps.project_id,
+		s.id as server_id,
+		s.name AS server_name,
+		s.type AS server_type,
+		s.ip_address,
+		s.port,
+		s.user_name,
+		s.private_key,
+		s.tag as server_tag,
+		s.status,
+		p.repo_name,
+		p.branch_name,
+		p.tag as project_tag,
+		p.shell,
+		p.status as project_status,
+		p.key,
+		p.secure,
+		p.repo_type
+	FROM
+		eo_ps_relation AS ps
+		LEFT JOIN eo_server AS s ON ps.server_id = s.id
+		LEFT JOIN eo_project AS p ON ps.project_id = p.id
+	WHERE
+		1 = 1 `
 
 const QueryByProjetIdSql = `SELECT
 		s.*, ps.user_id,
@@ -45,4 +45,9 @@ const QueryByProjetIdSql = `SELECT
 	ORDER BY
 		ps.id DESC`
 
-const SearchServerByKeyword = `SELECT * FROM eo_server as s WHERE s.create_at = ? AND (s.name LIKE ? OR s.tag LIKE ?)`
+const SearchServerByKeyword = `SELECT 
+		* 
+	FROM 
+		eo_server as s 
+	WHERE 
+		s.create_at = ? AND (s.name LIKE ? OR s.tag LIKE ?)`

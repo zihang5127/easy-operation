@@ -28,7 +28,6 @@ func InitDatabase() {
 
 // 初始化日志
 func InitLogger() {
-
 	_ = logs.SetLogger("console")
 	_ = logs.SetLogger("file", `{"filename":"logs/log.log"}`)
 	logs.EnableFuncCallDepth(true)
