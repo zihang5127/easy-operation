@@ -13,7 +13,6 @@ import (
 type Server struct {
 	Id         int       `orm:"pk;auto;unique;column(id)" json:"server_id"`
 	Name       string    `orm:"size(255);column(name)" json:"name"`
-	Type       string    `orm:"size(255);column(type);default(SSH)" json:"type"`
 	IpAddress  string    `orm:"size(255);column(ip_address)" json:"ip_address"`
 	Port       int       `orm:"type(int);column(port)" json:"port"`
 	Username   string    `orm:"size(255);column(user_name)" json:"user_name"`
@@ -40,7 +39,7 @@ func NewServer() *Server {
 }
 
 // 根据ID查找对象
-func (m *Server) Find() (error) {
+func (m *Server) Find() error {
 
 	if m.Id <= 0 {
 		return ErrInvalidParameter
@@ -51,13 +50,13 @@ func (m *Server) Find() (error) {
 		logs.Error("%s: ", "v0.1")
 		return err
 	}
-	return nil;
+	return nil
 }
 
 // 创建或更新
 func (m *Server) Save() error {
 	o := orm.NewOrm()
-	var err error;
+	var err error
 	if m.Id > 0 {
 		_, err = o.Update(m)
 	} else {

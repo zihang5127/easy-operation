@@ -12,7 +12,6 @@ import (
 	"strings"
 	_ "time"
 
-	"errors"
 	"github.com/astaxie/beego/logs"
 )
 
@@ -55,7 +54,7 @@ func Handle(value interface{}) {
 
 		channel := make(chan []byte, 10)
 
-		client, err := CreateClient(server.Type)
+		client, err := CreateClient()
 		//defer close(wsChannel.GetChannel())
 		if err != nil {
 			logs.Error("", err.Error())
@@ -98,12 +97,8 @@ func Handle(value interface{}) {
 	}
 }
 
-func CreateClient(t string) (client.Interface, error) {
-	if t == "SSH" {
-		return &client.SSHClient{}, nil
-	} else {
-		return nil, errors.New("Unknown client type")
-	}
+func CreateClient() (client.Interface, error) {
+	return &client.SSHClient{}, nil
 }
 
 func init() {

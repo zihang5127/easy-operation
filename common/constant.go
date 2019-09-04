@@ -9,7 +9,6 @@ const FindRelationDetailedByWhereSql = `SELECT
 		ps.project_id,
 		s.id as server_id,
 		s.name AS server_name,
-		s.type AS server_type,
 		s.ip_address,
 		s.port,
 		s.user_name,

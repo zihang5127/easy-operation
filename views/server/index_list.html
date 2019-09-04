@@ -10,7 +10,6 @@
         <span class="label label-danger">Disable</span>
         {{end}}
     </td>
-    <td>{{.Type}}</td>
     <td>{{dateformat .CreateTime "2006-01-02 15:04:05"}}</td>
     <td>
         <a href='{{urlfor "ServerController.Edit" ":id" .Id}}'  title="Edit" class="btn btn-default btn-sm edit-btn"><i class="fa fa-edit" aria-hidden="true"></i></a>

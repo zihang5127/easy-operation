@@ -69,7 +69,7 @@ func (m *PsRelation) Find(id int) error {
 	if err := o.Read(m); err != nil {
 		return err
 	}
-	return nil;
+	return nil
 }
 
 // RelationDetailed 包含 Proje 和 Server 信息的关系实体
@@ -86,7 +86,6 @@ type RelationDetailed struct {
 	RepositoryType string `json:"repository_type"`
 
 	ServerName   string `json:"server_name"`
-	ServerType   string `json:"server_type"`
 	IpAddress    string `json:"ip_address"`
 	Port         int    `json:"port"`
 	Username     string `json:"username"`
@@ -99,7 +98,7 @@ type RelationDetailed struct {
 func FindRelationDetailedByWhere(where string, params ...interface{}) ([]RelationDetailed, error) {
 	o := orm.NewOrm()
 
-	sql := common.FindRelationDetailedByWhereSql;
+	sql := common.FindRelationDetailedByWhereSql
 	if where != "" {
 		sql += where
 	}

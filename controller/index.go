@@ -299,7 +299,6 @@ func (c *IndexController) AddServer() {
 				temp := map[string]interface{}{
 					"server_id":   server.Id,
 					"name":        server.Name,
-					"type":        server.Type,
 					"ip_address":  server.IpAddress,
 					"port":        server.Port,
 					"add_time":    ps.CreateTime,
