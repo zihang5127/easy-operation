@@ -2,12 +2,11 @@ package client
 
 import (
 	"bufio"
+	"github.com/astaxie/beego/logs"
+	"golang.org/x/crypto/ssh"
 	"io"
 	"io/ioutil"
 	"net/url"
-
-	"github.com/astaxie/beego/logs"
-	"golang.org/x/crypto/ssh"
 )
 
 type SSHClient struct {
@@ -31,6 +30,7 @@ func (p *SSHClient) Connection(user, host, pass string) (*ssh.Client, *ssh.Sessi
 
 	//sshConfig.SetDefaults()
 
+	logs.Info("Connecting ... ", host)
 	client, err := ssh.Dial("tcp", host, sshConfig)
 	if err != nil {
 		return nil, nil, err
@@ -48,7 +48,6 @@ func (p *SSHClient) Connection(user, host, pass string) (*ssh.Client, *ssh.Sessi
 
 func (p *SSHClient) Command(host url.URL, username, password, shell string, channel chan<- []byte) {
 	defer close(channel)
-	logs.Info("Connecting %s", host)
 
 	_, session, err := p.Connection(username, host.Host, password)
 
@@ -65,10 +64,9 @@ func (p *SSHClient) Command(host url.URL, username, password, shell string, chan
 	}()
 	channel <- []byte("SSH Server connected: " + host.Host)
 
-	logs.Info("SSH Server connected: %s ", host)
+	logs.Info("SSH Server connected:  ", host)
 
 	stdout, err := session.StdoutPipe()
-
 	if err != nil {
 		logs.Error("StdoutPipe error: %s", err.Error())
 		channel <- []byte("Error: StdoutPipe error : " + err.Error())
@@ -101,16 +99,12 @@ func (p *SSHClient) Command(host url.URL, username, password, shell string, chan
 
 	if err == nil {
 		channel <- bytesErr
-
 	} else {
-
 		channel <- []byte("Error: Stderr error : " + err.Error())
 	}
 
 	if err := session.Wait(); err != nil {
-
 		logs.Error("Wait error: %s", err.Error())
-
 		channel <- []byte("Error: " + err.Error())
 		return
 	}

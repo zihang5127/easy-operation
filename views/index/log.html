@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Project build log - EasyOperation</title>
     {{template "widgets/headfile.html"}}
-
+    <style>
+        textarea {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
 </head>
 <body>
 {{template "widgets/head.html" .}}
@@ -45,7 +50,8 @@
                         <textarea name="shell" id="LogInfo" class="form-control"
                                   style="height: 500px;resize: none"></textarea>
                     </div>
-                </div>]
+                </div>
+                ]
             </div>
         </div>
         <div class="body-botton text-center">
@@ -61,7 +67,7 @@
     $(function () {
         var ws = new WebSocket('ws://' + window.location.host + '/ws');
         ws.onmessage = function (e) {
-            $("#LogInfo").append(e.data+"&#10;");
+            $("#LogInfo").text(e.data);
             $("#LogInfo").scrollTop($("#LogInfo")[0].scrollHeight);
         };
     });

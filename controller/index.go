@@ -23,7 +23,7 @@ func (c *IndexController) Index() {
 	c.authenticate()
 	c.Layout = ""
 	c.TplName = "index/index.html"
-	//
+
 	pageIndex, _ := c.GetInt("page", 1)
 
 	var projectes []model.Project
@@ -36,14 +36,12 @@ func (c *IndexController) Index() {
 		PageSize:            15,
 		Conditions:          " AND create_at = 1 order by id desc",
 	}
-	//
-	//
-	//
-	////返回分页信息,
-	////第一个:为返回的当前页面数据集合,ResultSet类型
-	////第二个:生成的分页链接
-	////第三个:返回总记录数
-	////第四个:返回总页数
+
+	//返回分页信息,
+	//第一个:为返回的当前页面数据集合,ResultSet类型
+	//第二个:生成的分页链接
+	//第三个:返回总记录数
+	//第四个:返回总页数
 	totalItem, totalCount, rs, pageHtml := pager.GetPagerLinks(&pageOptions, c.Ctx)
 
 	_, err := rs.QueryRows(&projectes) //把当前页面的数据序列化进一个切片内

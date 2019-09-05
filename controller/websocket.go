@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"bytes"
+	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/gorilla/websocket"
 	"github.com/zihang5127/easy-operation/module/channel"
@@ -26,21 +28,28 @@ func (c *WebSocketController) Ws() {
 		logs.Error("%s", err)
 	}
 
+	var buffer bytes.Buffer
 	go func() {
 		for {
 			timeout := time.NewTimer(time.Second * time.Duration(60*30))
 			select {
 			case temp := <-chann:
-				c.Write(ws, temp)
+				buffer.Write(temp)
+				//c.Write(ws, values)
 			case <-timeout.C:
-				c.Write(ws, []byte("timeout"))
+				buffer.Write([]byte("timeout"))
+				//c.Write(ws, []byte("timeout"))
 			case <-oc:
 				goto out
 			}
 		}
 	out:
-		c.Write(ws, []byte("&#10;&#10;&#10;&#10;The command was executed successfully !!!"))
+		fmt.Println(string(buffer.Bytes()))
+		buffer.Write([]byte("&#10;&#10;&#10;&#10;The command was executed successfully !!!"))
+
+		c.Write(ws, buffer.Bytes())
 	}()
+
 }
 
 func (c *WebSocketController) Write(ws *websocket.Conn, msg []byte) {

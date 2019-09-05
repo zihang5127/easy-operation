@@ -80,8 +80,6 @@ func Handle(value interface{}) {
 			u = &url.URL{Scheme: scheme, Host: host}
 		}
 
-		logs.Info("Connecting ... %s", u)
-
 		go client.Command(*u, server.Username, server.PrivateKey, project.Shell, channel)
 
 		if ok {
