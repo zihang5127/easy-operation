@@ -2,7 +2,6 @@ package controller
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/gorilla/websocket"
 	"github.com/zihang5127/easy-operation/module/channel"
@@ -44,7 +43,7 @@ func (c *WebSocketController) Ws() {
 			}
 		}
 	out:
-		fmt.Println(string(buffer.Bytes()))
+		logs.Info(string(buffer.Bytes()))
 		buffer.Write([]byte("\n\n\n\nThe command was executed successfully !!!"))
 		c.Write(ws, buffer.Bytes())
 	}()
