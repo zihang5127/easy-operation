@@ -72,3 +72,4 @@ go build -v -tags "pam" -ldflags "-w"
 ## 添加 Project
 
 - Project 的 Shell 脚本命令 **暂** 不支持换行，建议用服务器 Shell 脚本代替命令,也可使用 ‘&&’ 拼接命令。
+- 当前的 SSH 连接不支持环境变量，需要 *export* 指定，或写绝对路径。

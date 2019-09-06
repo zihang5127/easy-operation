@@ -1,10 +1,12 @@
 function loadCodeMirrorEditor(id) {
     window.CodeMirrorEditor = CodeMirror.fromTextArea(document.getElementById(id),{
-        lineNumbers: true,
-        mode: "text/x-sh",
-        lineWrapping : true,
-        matchBrackets: true,
-        autoCloseBrackets: true
+        mode: "shell",    //实现groovy代码高亮
+        lineNumbers: true,	//显示行号
+        theme: "dracula",	//设置主题
+        lineWrapping: true,	//代码折叠
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        matchBrackets: true,	//括号匹配
     });
 
     window.CodeMirrorEditor.on("change",function () {

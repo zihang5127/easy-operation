@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
+{{template "widgets/headfile.html"}}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit Project - EasyOperation</title>
-    {{template "widgets/headfile.html"}}
-
+    <meta charset="utf-8"/>
+    <title>代码框</title>
 </head>
 <body>
 {{template "widgets/head.html" .}}
@@ -70,7 +68,7 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="shellScript">Shell Script</label>
-                            <textarea name="shell" id="shellScript" class="form-control"
+                            <textarea name="shell" id="shellScript" class="form-control" autofocus="true"
                                       style="height: 150px;resize: none">{{.Model.Shell}}</textarea>
                         </div>
                     </div>
@@ -91,8 +89,17 @@
 {{template "widgets/foot.html" .}}
 <script type="text/javascript">
     $(function () {
-        window.loadCodeMirrorEditor("shellScript");
-    });
+        //根据DOM元素的id构造出一个编辑器
+        var editor = CodeMirror.fromTextArea(document.getElementById("shellScript"), {
+            mode: "shell",    //实现groovy代码高亮
+            lineNumbers: true,	//显示行号
+            lineWrapping: true,	//代码折叠
+            foldGutter: true,
+            theme: "dracula",	//设置主题
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+            matchBrackets: true,	//括号匹配
+        });
+    })
 </script>
 </body>
 </html>

@@ -4,23 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Project the list of servers - EasyOperation</title>
-    {{template "widgets/headfile.html"}}
     <link rel="stylesheet" href="/static/bootstrap/plugins/select2/css/select2.min.css">
-    <style type="text/css">
-        .select2-results__option:hover {
-            background: #5897fb;
-            color: #ffffff;
-            cursor: pointer;
-        }
-    </style>
-    {{if .dev}}
-        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.css">
-        <link rel="stylesheet" href="/static/codemirror/lib/codemirror.css">
-        <link rel="stylesheet" href="/static/css/global.css">
-        <script src="/static/js/jquery-1.12.4.min.js" type="text/javascript"></script>
-        <script src="/static/js/jquery.form.js" type="text/javascript"></script>
-    {{end}}
+    {{template "widgets/headfile.html"}}
 </head>
 <body>
 {{template "widgets/head.html" .}}

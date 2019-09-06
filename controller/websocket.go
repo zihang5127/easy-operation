@@ -45,8 +45,7 @@ func (c *WebSocketController) Ws() {
 		}
 	out:
 		fmt.Println(string(buffer.Bytes()))
-		buffer.Write([]byte("The command was executed successfully !!!"))
-
+		buffer.Write([]byte("\n\n\n\nThe command was executed successfully !!!"))
 		c.Write(ws, buffer.Bytes())
 	}()
 
