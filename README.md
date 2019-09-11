@@ -16,7 +16,6 @@
 
 ```
 git clone https://github.com/zihang5127/easy-operation.git
-
 ``` 
 
 **2、配置**
